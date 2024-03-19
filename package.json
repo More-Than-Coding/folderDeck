@@ -17,8 +17,7 @@
     "tauri-build": "vite build",
     "tauri-dev": "vite",
     "update-version": "node tasks/version",
-    "update-cargo": "cd src-tauri && cargo update",
-    "update-release": "git checkout release && git merge main && git push origin release"
+    "update-cargo": "cd src-tauri && cargo update"
   },
   "dependencies": {
     "@aptabase/tauri": "^0.4.1",

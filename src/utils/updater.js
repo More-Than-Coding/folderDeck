@@ -4,7 +4,7 @@ import { relaunch } from '@tauri-apps/api/process'
 export const updateApp = async () => {
   try {
     // Set variables
-    const { shouldUpdate, manifest } = await checkUpdate()
+    const { shouldUpdate } = await checkUpdate()
 
     // Early exist if offline or should not update
     if (!window.navigator.onLine || !shouldUpdate) return
