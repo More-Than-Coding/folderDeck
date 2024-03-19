@@ -1,6 +1,6 @@
 [package]
 name = "folderdeck"
-version = "0.1.0"
+version = "0.0.1"
 description = "Open-source file management app for project folders."
 authors = ["More Than Coding"]
 license = ""
