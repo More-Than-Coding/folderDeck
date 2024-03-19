@@ -1,0 +1,65 @@
+{
+  "name": "folderdeck",
+  "author": {
+    "name": "More Than Coding",
+    "url": "https://github.com/More-Than-Coding"
+  },
+  "description": "Open-source file management app for project folders.",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist src-tauri/target",
+    "build": "yarn tauri build",
+    "dev": "yarn tauri dev",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri-build": "vite build",
+    "tauri-dev": "vite",
+    "update-version": "node tasks/version",
+    "update-cargo": "cd src-tauri && cargo update",
+    "update-release": "git checkout release && git merge main && git push origin release"
+  },
+  "dependencies": {
+    "@aptabase/tauri": "^0.4.1",
+    "@tauri-apps/api": "^1.5.3",
+    "@tauri-apps/plugin-log": "^2.0.0-beta.1",
+    "@vueuse/components": "^10.9.0",
+    "@vueuse/core": "^10.9.0",
+    "pinia": "^2.1.7",
+    "tauri-plugin-fs-watch-api": "https://github.com/tauri-apps/tauri-plugin-fs-watch#v1",
+    "tauri-plugin-store-api": "^0.0.0",
+    "tauri-plugin-window-state-api": "https://github.com/tauri-apps/tauri-plugin-window-state#v1",
+    "vue": "^3.4.21",
+    "vue-i18n": "^9.10.2",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@clack/prompts": "^0.7.0",
+    "@tauri-apps/cli": "^1.5.10",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "autoprefixer": "^10.4.18",
+    "concurrently": "^8.2.2",
+    "npm-run-all2": "^6.1.2",
+    "postcss": "^8.4.35",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "rimraf": "^5.0.5",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.1.6",
+    "vite-plugin-vue-devtools": "^7.0.17"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "packageManager": "yarn@4.1.1"
+}

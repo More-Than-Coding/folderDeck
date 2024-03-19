@@ -1,0 +1,73 @@
+{
+  "build": {
+    "beforeDevCommand": "yarn tauri-dev",
+    "beforeBuildCommand": "yarn tauri-build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": false
+  },
+  "package": {
+    "productName": "FolderDeck",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "fs": {
+        "exists": true,
+        "readDir": true
+      },
+      "dialog": {
+        "open": true
+      },
+      "notification": {
+        "all": true
+      },
+      "path": {
+        "all": true
+      },
+      "window": {
+        "center": true,
+        "startDragging": true,
+        "maximize": true,
+        "unmaximize": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.morethancoding.folderDeck",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": true,
+      "dialog": true,
+      "endpoints": [
+        "https://github.com/More-Than-Coding/mtc-pm-releases/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDc2QTZEQTIxQTAyREI4M0YKUldRL3VDMmdJZHFtZGlQVGZGOTNKLytLK09iNklscllLZnpaWmxYTmZTcVE4Z2dPKzlXY1NDZ2IK"
+    },
+    "windows": [
+      {
+        "center": true,
+        "fullscreen": false,
+        "hiddenTitle": true,
+        "resizable": true,
+        "title": "FolderDeck",
+        "titleBarStyle": "Overlay",
+        "height": 800,
+        "width": 450,
+        "minHeight": 640,
+        "minWidth": 380
+      }
+    ]
+  }
+}

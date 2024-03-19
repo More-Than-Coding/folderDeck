@@ -1,0 +1,97 @@
+{
+  "general": {
+    "loading": "Loading ...",
+    "updated": "Updated {time}",
+    "submit": "Submit"
+  },
+  "metadata": {
+    "file_size": "File size {size}",
+    "created": "Created {time}",
+    "modified": "Updated {time}"
+  },
+  "projects": {
+    "action": {
+      "open_dir": "Open folder",
+      "open_file": "Open file"
+    },
+    "add": {
+      "button": "Create Project",
+      "label": "Add New Project",
+      "placeholder": "New Project Name"
+    },
+    "alerts": {
+      "error": "Failed to create {project}",
+      "exists": "{project} already exists",
+      "success": "Successfully created {project}"
+    },
+    "counts": {
+      "dirs": "{count} folder | {count} folders | {count} folders",
+      "files": "{count} file | {count} files | {count} files",
+      "projects": "{count} projects | {count} projects | {count} projects"
+    },
+    "empty": "No results for this view at the moment",
+    "filters": {
+      "name": {
+        "label": "Name",
+        "aria": "Filter projects by name"
+      },
+      "recent": {
+        "label": "Recent",
+        "aria": "Filter projects by recency"
+      },
+      "files": {
+        "label": "Files",
+        "aria": "Filter files by recency"
+      }
+    },
+    "setup": {
+      "loading": "Getting files and folders"
+    },
+    "types": {
+      "dir": "Folder",
+      "file": "File"
+    }
+  },
+  "routes": {
+    "projects": "Projects",
+    "settings": "Settings",
+    "start": "Start"
+  },
+  "search": {
+    "no_results": "No result for this search.",
+    "placeholder": "Search for projects or files ..."
+  },
+  "start": {
+    "titles": {
+      "analytics": "Analytic Tracking",
+      "projects": "Your Projects",
+      "template": "Your Template"
+    },
+    "info": {
+      "analytics": "We anonymously track usage data to help us understand application performance.",
+      "projects": "This is the folder where all of your project work will be stored and created.",
+      "template": "The contents of this folder will be copied into the new project folder when created."
+    },
+    "labels": {
+      "analytics": "Enable analytic tracking",
+      "complete": "Finish Setup"
+    }
+  },
+  "settings": {
+    "analytics": {
+      "label": "Anonymous analytics tracking",
+      "info": "We only record anonymous usage data. These statistics help us understand application performance."
+    },
+    "ignore": {
+      "placeholder": "eg. archive, .env",
+      "label": "Ignored files and folders",
+      "info": "This references the path to the file or folder. The following will always be ignored (including {files})."
+    },
+    "pagination": {
+      "label": "Number of items to show",
+      "info": "The number of projects or files to show per filter."
+    },
+    "select_projects": "Select Projects Folder",
+    "select_template": "Select Template Folder"
+  }
+}
