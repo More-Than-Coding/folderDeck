@@ -29,7 +29,7 @@ const isCurrentBranch = async (branch) => {
     if (currentBranch === branch.toLowerCase()) return true
     else return false
   } catch (error) {
-    console.error('Branch already exists:', error)
+    console.error('Error checking current branch:', error)
     return false
   }
 }
