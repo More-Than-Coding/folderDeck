@@ -109,7 +109,7 @@ const watchUpdates = async () => {
     >
       <template v-if="$route.name && !showStart">
         {{ $t(`${$route.name}`) }}
-        <template v-if="store.totalProjects > 0">
+        <template v-if="store.totalProjects > 0 && $route.path != '/settings'">
           ({{ store.totalProjects }})
         </template>
       </template>
