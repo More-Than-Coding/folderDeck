@@ -20,7 +20,6 @@ import { getName } from '@tauri-apps/api/app'
 
 // Utilities
 import { pathFilename } from '@src/utils/paths'
-import { updateApp } from '@src/utils/updater'
 import { ignoreList } from '@src/utils/entries'
 
 // Components
@@ -47,7 +46,6 @@ watch(showStart, () => setRoute())
 onBeforeMount(async () => {
   restoreStateCurrent(StateFlags.SIZE)
   appName.value = await getName()
-  await updateApp()
 })
 onMounted(async () => {
   await store.init()
