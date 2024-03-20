@@ -25,6 +25,9 @@
       "path": {
         "all": true
       },
+      "process": {
+        "relaunch": true
+      },
       "window": {
         "center": true,
         "startDragging": true,

@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 
 // Tauri
 import { invoke } from '@tauri-apps/api'
+import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
+import { relaunch } from '@tauri-apps/api/process'
 
 // Utils
 import { timeConvertMs } from '@src/utils/performance'
@@ -14,6 +16,11 @@ import { devLog } from '@src/utils/log'
 export const useStore = defineStore('main', {
   state: () => ({
     addProject: false,
+    appUpdate: {
+      available: false,
+      checking: false,
+      installing: false,
+    },
     dir: {
       projects: null,
       template: null,
@@ -56,11 +63,11 @@ export const useStore = defineStore('main', {
         return
       }
 
-      // Setup Directories
+      // Update states
       this.dir.projects = projects.value
       this.dir.template = template.value
 
-      // Update pagination
+      // Conditional state updates
       if (pagination != null) this.pagination = pagination.value
       if (filter != null) this.filter = filter.value
     },
@@ -187,6 +194,36 @@ export const useStore = defineStore('main', {
         title: '🕛 Search Response',
         message: timeConvertMs(timeComplete),
       })
+    },
+    async updateApp() {
+      try {
+        // Early exit if offline
+        if (!window.navigator.onLine) return false
+
+        // Check if update is available
+        this.appUpdate.checking = true
+        this.appUpdate.available = await checkUpdate()
+
+        // If no update available exit
+        if (!this.appUpdate.available) {
+          this.appUpdate.checking = false
+          return
+        }
+
+        // Update statuses
+        this.appUpdate.checking = false
+        this.appUpdate.installing = true
+
+        // Install update and relaunch
+        await installUpdate()
+        await relaunch()
+      } catch (error) {
+        devLog({
+          title: '🚨 Updater Error',
+          message: 'Checking for release failed',
+          error,
+        })
+      }
     },
   },
 })
