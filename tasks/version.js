@@ -83,6 +83,9 @@ if (!selectVersion) {
   })
 }
 
+// Cancel on version options
+if (isCancel(version)) cancelled()
+
 // Create a release branch
 const createRelease = await confirm({
   message: 'Do you want to create a branch (this will branch from `main`)?',
@@ -93,13 +96,14 @@ if (createRelease) {
 
   // Exit if could not create release branch
   if (!branchCreated.success) {
+    console.error('FAILED')
     cancel(branchCreated.message)
     process.exit(0)
   }
 }
 
 // If selections are cancelled
-if (isCancel(version) || isCancel(createRelease)) cancelled()
+if (isCancel(createRelease)) cancelled()
 
 // Update version
 updateVersions(version)
