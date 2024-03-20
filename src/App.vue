@@ -45,8 +45,8 @@ watch(showStart, () => setRoute())
 // Lifecycle
 onBeforeMount(async () => {
   restoreStateCurrent(StateFlags.SIZE)
-  await updateApp()
   appName.value = await getName()
+  await updateApp()
 })
 onMounted(async () => {
   await store.init()
