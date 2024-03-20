@@ -1,12 +1,12 @@
-export const devLog = ({ title, message, error = false }) => {
+export const devLog = ({ title, message, error = null }) => {
   // Do not log in production
   if (import.meta.env.PROD) return
 
   // Setup styling for basic output
-  let css = 'color: #FFCB6B; background: #2B2B2B; padding: 4px 2px;'
+  let css = 'color: #FFCB6B; background: #2B2B2B;'
 
-  if (error) {
-    css = 'color: #2B2B2B; background: #fca5a5; padding: 4px 2px;'
+  if (error != null) {
+    css = 'color: #fca5a5;'
   }
 
   // Determine output of item
@@ -27,5 +27,9 @@ export const devLog = ({ title, message, error = false }) => {
     default:
       console.debug(`\%c ${title.trim()}: ${message.trim()} `, css)
       break
+  }
+
+  if (error != null) {
+    console.error(error)
   }
 }

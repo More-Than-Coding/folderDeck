@@ -18,7 +18,7 @@ lazy_static = "1.4.0"
 log = "0.4.20"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tauri = { version = "1.4", features = [ "updater", "notification-all", "fs-exists", "window-center", "window-maximize", "window-unmaximize", "fs-read-dir", "path-all", "dialog-open", "window-start-dragging"] }
+tauri = { version = "1.4", features = [ "process-relaunch", "updater", "notification-all", "fs-exists", "window-center", "window-maximize", "window-unmaximize", "fs-read-dir", "path-all", "dialog-open", "window-start-dragging"] }
 tauri-plugin-aptabase = "0.4"
 tauri-plugin-fs-extra = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }

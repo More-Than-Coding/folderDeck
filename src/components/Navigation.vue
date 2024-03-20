@@ -20,7 +20,7 @@ const menu = [
     <ul class="flex flex-col gap-1">
       <li v-for="(item, index) in menu" :key="index">
         <router-link
-          class="flex items-center justify-center rounded-md py-2 opacity-60 hover:bg-white hover:opacity-100 dark:hover:bg-zinc-800"
+          class="flex items-center justify-center rounded-md py-2 opacity-60 hover:bg-white hover:opacity-100 disabled:cursor-not-allowed dark:hover:bg-zinc-800"
           :to="item.to"
           @click="store.search = ''"
         >

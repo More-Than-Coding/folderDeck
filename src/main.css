@@ -46,6 +46,7 @@
     @apply inline-flex items-center justify-center gap-1;
     @apply rounded-3xl px-8 py-2;
     @apply transition duration-200;
+    @apply disabled:cursor-not-allowed;
   }
   .btn,
   .btn-solid {

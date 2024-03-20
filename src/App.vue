@@ -6,6 +6,7 @@ import {
   onUnmounted,
   ref,
   watch,
+  watchEffect,
 } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { router } from '@src/plugins/router'
@@ -20,7 +21,6 @@ import { getName } from '@tauri-apps/api/app'
 
 // Utilities
 import { pathFilename } from '@src/utils/paths'
-import { updateApp } from '@src/utils/updater'
 import { ignoreList } from '@src/utils/entries'
 
 // Components
@@ -29,24 +29,30 @@ import Navigation from '@src/components/Navigation.vue'
 import AddProject from '@src/components/AddProject.vue'
 import Filters from '@src/components/Filters.vue'
 import Search from '@src/components/Search.vue'
+import Update from '@src/components/Update.vue'
 
 const store = useStore()
 
 // Data
 const watcher = ref(null)
 const appName = ref(null)
+const showUpdate = ref(true)
 
 // Computed
 const showStart = computed(() => store.start)
 
 // Watchers
 watch(showStart, () => setRoute())
+watchEffect(() => {
+  if (!store.appUpdate.complete) return
+  setTimeout(() => (showUpdate.value = false), 500)
+})
 
 // Lifecycle
 onBeforeMount(async () => {
   restoreStateCurrent(StateFlags.SIZE)
-  await updateApp()
   appName.value = await getName()
+  await store.updateApp()
 })
 onMounted(async () => {
   await store.init()
@@ -103,7 +109,7 @@ const watchUpdates = async () => {
     >
       <template v-if="$route.name && !showStart">
         {{ $t(`${$route.name}`) }}
-        <template v-if="store.totalProjects > 0">
+        <template v-if="store.totalProjects > 0 && $route.path != '/settings'">
           ({{ store.totalProjects }})
         </template>
       </template>
@@ -122,8 +128,18 @@ const watchUpdates = async () => {
       <!-- Content -->
       <main
         role="main"
-        class="scheme-content flex-auto overflow-hidden rounded-xl"
+        class="scheme-content relative flex-auto overflow-hidden rounded-xl"
       >
+        <!-- Show updating -->
+        <transition
+          leave-active-class="duration-100 ease-in transform"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
+        >
+          <Update v-if="showUpdate" />
+        </transition>
+
+        <!-- Content -->
         <div class="flex h-full flex-col">
           <!-- Floating Head -->
           <div
