@@ -93,7 +93,7 @@ if (createRelease) {
 
   // Exit if could not create release branch
   if (!branchCreated) {
-    cancel('There branch is not clean or this release branch already exists.')
+    cancel('There branch is not clean or this version branch already exists.')
     process.exit(0)
   }
 }
