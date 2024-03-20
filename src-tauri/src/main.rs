@@ -12,9 +12,8 @@ pub mod read;
 
 // Methods
 fn get_aptabase_id() -> String {
-    env::var("APTABASE_ID").expect("APTABASE_ID must be set")
+    env::var("APTABASE_ID").unwrap_or_else(|_| "A-US-1234567890".to_string())
 }
-
 // Main Launch
 #[tokio::main]
 async fn main() {
