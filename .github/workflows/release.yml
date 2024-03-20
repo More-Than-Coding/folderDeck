@@ -61,5 +61,4 @@ jobs:
           releaseBody: 'Updates to improve the functionality and stability of the application.'
           releaseDraft: true
           prerelease: false
-          releaseCommitish: 'release' # static sha to test if pushing multiple targets
           args: ${{ matrix.settings.args }}
