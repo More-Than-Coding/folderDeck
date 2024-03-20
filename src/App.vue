@@ -29,6 +29,7 @@ import Navigation from '@src/components/Navigation.vue'
 import AddProject from '@src/components/AddProject.vue'
 import Filters from '@src/components/Filters.vue'
 import Search from '@src/components/Search.vue'
+import Update from '@src/components/Update.vue'
 
 const store = useStore()
 
@@ -122,8 +123,9 @@ const watchUpdates = async () => {
       <!-- Content -->
       <main
         role="main"
-        class="scheme-content flex-auto overflow-hidden rounded-xl"
+        class="scheme-content relative flex-auto overflow-hidden rounded-xl"
       >
+        <Update />
         <div class="flex h-full flex-col">
           <!-- Floating Head -->
           <div

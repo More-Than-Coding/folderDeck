@@ -93,5 +93,9 @@
     },
     "select_projects": "Select Projects Folder",
     "select_template": "Select Template Folder"
+  },
+  "update": {
+    "checking": "Checking for new version",
+    "updating": "Installing latest update"
   }
 }
