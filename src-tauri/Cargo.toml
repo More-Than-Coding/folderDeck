@@ -32,3 +32,5 @@ tokio = { verison = "1.36.0", features = ["full"] }
 # this feature is used for production builds or when `devPath` points to the filesystem
 # DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
+default = [] # No features enabled by default
+use_default_aptabase_id = [] # Feature to use a default APTABASE_ID

@@ -12,8 +12,17 @@ pub mod read;
 
 // Methods
 fn get_aptabase_id() -> String {
-    env::var("APTABASE_ID").unwrap_or_else(|_| "A-US-1234567890".to_string())
+    // Attempt to get the compile-time value of APTABASE_ID
+    let compile_time_value = option_env!("APTABASE_ID");
+
+    match compile_time_value {
+        // If available at compile time, use it directly
+        Some(value) => value.to_string(),
+        // If not available at compile time, attempt to get it at runtime, with a fallback
+        None => env::var("APTABASE_ID").unwrap_or_else(|_| "A-US-1234567890".to_string()),
+    }
 }
+
 // Main Launch
 #[tokio::main]
 async fn main() {
