@@ -6,6 +6,7 @@ import {
   onUnmounted,
   ref,
   watch,
+  watchEffect,
 } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { router } from '@src/plugins/router'
@@ -35,12 +36,17 @@ const store = useStore()
 // Data
 const watcher = ref(null)
 const appName = ref(null)
+const showUpdate = ref(true)
 
 // Computed
 const showStart = computed(() => store.start)
 
 // Watchers
 watch(showStart, () => setRoute())
+watchEffect(() => {
+  if (!store.appUpdate.complete) return
+  setTimeout(() => (showUpdate.value = false), 500)
+})
 
 // Lifecycle
 onBeforeMount(async () => {
@@ -124,7 +130,16 @@ const watchUpdates = async () => {
         role="main"
         class="scheme-content relative flex-auto overflow-hidden rounded-xl"
       >
-        <Update />
+        <!-- Show updating -->
+        <transition
+          leave-active-class="duration-100 ease-in transform"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
+        >
+          <Update v-if="showUpdate" />
+        </transition>
+
+        <!-- Content -->
         <div class="flex h-full flex-col">
           <!-- Floating Head -->
           <div

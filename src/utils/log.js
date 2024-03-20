@@ -6,7 +6,7 @@ export const devLog = ({ title, message, error = null }) => {
   let css = 'color: #FFCB6B; background: #2B2B2B; padding: 4px 2px;'
 
   if (error != null) {
-    css = 'color: #2B2B2B; background: #fca5a5; padding: 4px 2px;'
+    css = 'color: #fca5a5; padding: 4px 2px;'
   }
 
   // Determine output of item

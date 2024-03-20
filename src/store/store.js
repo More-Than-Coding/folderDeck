@@ -19,7 +19,9 @@ export const useStore = defineStore('main', {
     appUpdate: {
       available: false,
       checking: false,
+      complete: false,
       installing: false,
+      manifest: {},
     },
     dir: {
       projects: null,
@@ -202,11 +204,16 @@ export const useStore = defineStore('main', {
 
         // Check if update is available
         this.appUpdate.checking = true
-        this.appUpdate.available = await checkUpdate()
+        const { manifest, shouldUpdate } = await checkUpdate()
+
+        // State updates
+        this.appUpdate.available = shouldUpdate
+        this.appUpdate.manifest = manifest
 
         // If no update available exit
         if (!this.appUpdate.available) {
           this.appUpdate.checking = false
+          this.appUpdate.complete = true
           return
         }
 
@@ -215,8 +222,14 @@ export const useStore = defineStore('main', {
         this.appUpdate.installing = true
 
         // Install update and relaunch
-        await installUpdate()
-        await relaunch()
+        if (import.meta.env.PROD) {
+          await installUpdate()
+          await relaunch()
+        }
+
+        // Remove installing
+        this.appUpdate.installing = false
+        this.appUpdate.complete = true
       } catch (error) {
         devLog({
           title: '🚨 Updater Error',

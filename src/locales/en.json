@@ -96,6 +96,7 @@
   },
   "update": {
     "checking": "Checking for new version",
-    "updating": "Installing latest update"
+    "installing": "Installing update to v{version}",
+    "pass": "Starting ..."
   }
 }

@@ -1,4 +1,23 @@
-<script setup></script>
+<script setup>
+import { onMounted, reactive } from 'vue'
+import { useStore } from '@src/store/store'
+import { onUpdaterEvent } from '@tauri-apps/api/updater'
+
+const store = useStore()
+
+const events = reactive({
+  error: null,
+  status: null,
+})
+
+onMounted(async () => {
+  await onUpdaterEvent(({ error, status }) => {
+    const statusMap = { error, status }
+    events.error = statusMap.error
+    events.status = statusMap.status
+  })
+})
+</script>
 
 <template>
   <div
@@ -22,7 +41,19 @@
       />
     </svg>
     <span class="font-medium">
-      {{ $t('update.updating') }}
+      <template v-if="store.appUpdate.checking">
+        {{ $t('update.checking') }}
+      </template>
+
+      <template v-if="store.appUpdate.installing">
+        {{
+          $t('update.installing', { version: store.appUpdate.manifest.version })
+        }}
+      </template>
+
+      <template v-if="!store.appUpdate.checking && !store.appUpdate.installing">
+        {{ $t('update.pass') }}
+      </template>
     </span>
   </div>
 </template>
