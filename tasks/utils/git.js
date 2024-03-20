@@ -66,9 +66,6 @@ export const createBranch = async (branchName, fromBranch = 'main') => {
     const isBranchMain = await isCurrentBranch('main')
     if (!isBranchMain) await executeCommand(`git checkout ${fromBranch}`)
 
-    // Pull the latest changes from the remote main branch
-    await executeCommand('git pull origin main')
-
     // Create and check out to the new branch
     await executeCommand(`git checkout -b ${branchName}`)
 
