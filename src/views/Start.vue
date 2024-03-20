@@ -52,15 +52,15 @@ const save = async ({ key, value }) => {
 }
 const selectDir = async (key) => {
   const value = await open({ directory: true })
+  console.log('value', value)
   // Exit if value is null
   if (value == null) return
-
   // Save
-  store.saveSetting({ key, value })
+  store.saveSetting({ key, value, dir: true })
 }
 </script>
 <template>
-  <div class="px-20">
+  <div class="flex h-full items-center justify-center px-20">
     <!-- Step: Projects -->
     <transition
       enter-active-class="transform-opacity duration-100 ease-out"

@@ -110,14 +110,20 @@ const watchUpdates = async () => {
     </header>
 
     <!-- Main Content -->
-    <main class="flex h-full overflow-hidden pr-4" role="main">
+    <div
+      class="flex h-full overflow-hidden pr-4"
+      :class="{ 'pl-4': showStart }"
+    >
       <!-- Navigation -->
       <aside v-if="!showStart" class="sticky top-0 w-[3.25rem] shrink-0 px-1.5">
         <Navigation />
       </aside>
 
       <!-- Content -->
-      <div class="scheme-content flex-auto overflow-hidden rounded-xl">
+      <main
+        role="main"
+        class="scheme-content flex-auto overflow-hidden rounded-xl"
+      >
         <div class="flex h-full flex-col">
           <!-- Floating Head -->
           <div
@@ -158,12 +164,12 @@ const watchUpdates = async () => {
             </transition>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
 
     <footer
-      v-if="!showStart"
-      class="flex h-7 w-full cursor-default select-none items-center justify-center gap-2 pl-10 text-[.6rem] font-semibold uppercase tracking-wide text-neutral-500 dark:text-zinc-500"
+      class="flex h-7 w-full cursor-default select-none items-center justify-center gap-2 text-[.6rem] font-semibold uppercase tracking-wide text-neutral-500 dark:text-zinc-500"
+      :class="{ 'pl-10': !showStart }"
     >
       <span>{{ appName }}</span>
       <template v-if="store.lastUpdated != null">

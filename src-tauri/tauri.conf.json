@@ -49,7 +49,7 @@
     },
     "updater": {
       "active": true,
-      "dialog": true,
+      "dialog": false,
       "endpoints": [
         "https://github.com/More-Than-Coding/folderDeck/releases/latest/download/latest.json"
       ],
