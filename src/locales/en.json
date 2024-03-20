@@ -95,8 +95,10 @@
     "select_template": "Select Template Folder"
   },
   "update": {
-    "checking": "Checking for new version",
-    "installing": "Installing update to v{version}",
-    "pass": "Starting ..."
+    "checking": "Checking for new version ...",
+    "complete": "Starting app ...",
+    "failed": "Failed to download update",
+    "downloading": "Downloading update ...",
+    "installing": "Installing update (v{version})"
   }
 }

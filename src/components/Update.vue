@@ -1,22 +1,32 @@
 <script setup>
-import { onMounted, reactive } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useStore } from '@src/store/store'
 import { onUpdaterEvent } from '@tauri-apps/api/updater'
 
 const store = useStore()
-
-const events = reactive({
-  error: null,
-  status: null,
-})
+const failed = ref(false)
+const downloading = ref(false)
+const installing = ref(false)
 
 onMounted(async () => {
   await onUpdaterEvent(({ error, status }) => {
-    const statusMap = { error, status }
-    events.error = statusMap.error
-    events.status = statusMap.status
+    reset()
+
+    // Set standard statuses
+    downloading.value = status === 'PENDING'
+    installing.value = status === 'DOWNLOADED'
+
+    // Set failed status
+    failed.value = error != null
   })
 })
+
+// Methods
+const reset = () => {
+  failed.value = false
+  downloading.value = false
+  installing.value = false
+}
 </script>
 
 <template>
@@ -41,18 +51,33 @@ onMounted(async () => {
       />
     </svg>
     <span class="font-medium">
+      <!-- Checking for update -->
       <template v-if="store.appUpdate.checking">
         {{ $t('update.checking') }}
       </template>
 
+      <!-- Installation process -->
       <template v-if="store.appUpdate.installing">
-        {{
-          $t('update.installing', { version: store.appUpdate.manifest.version })
-        }}
+        <template v-if="downloading">
+          {{ $t('update.downloading') }}
+        </template>
+        <template v-if="installing">
+          {{
+            $t('update.installing', {
+              version: store.appUpdate.manifest.version,
+            })
+          }}
+        </template>
       </template>
 
-      <template v-if="!store.appUpdate.checking && !store.appUpdate.installing">
-        {{ $t('update.pass') }}
+      <!-- Complete -->
+      <template v-if="store.appUpdate.complete">
+        {{ $t('update.complete') }}
+      </template>
+
+      <!-- Error -->
+      <template v-if="failed">
+        {{ $t('update.failed') }}
       </template>
     </span>
   </div>
