@@ -92,8 +92,8 @@ if (createRelease) {
   const branchCreated = await createBranch(`v${version}`)
 
   // Exit if could not create release branch
-  if (!branchCreated) {
-    cancel('There branch is not clean or this version branch already exists.')
+  if (!branchCreated.success) {
+    cancel(branchCreated.message)
     process.exit(0)
   }
 }

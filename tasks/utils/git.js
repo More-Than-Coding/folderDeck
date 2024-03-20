@@ -60,7 +60,8 @@ export const createBranch = async (branchName, fromBranch = 'main') => {
   try {
     // Check if branch is clean
     const isBranchClean = await isCurrentBranchClean()
-    if (!isBranchClean) return false
+    if (!isBranchClean)
+      return { success: false, message: 'Branch is not clean' }
 
     // Checkout main branch if not already
     const isBranchMain = await isCurrentBranch('main')
@@ -69,8 +70,8 @@ export const createBranch = async (branchName, fromBranch = 'main') => {
     // Create and check out to the new branch
     await executeCommand(`git checkout -b ${branchName}`)
 
-    return true
+    return { success: true, message: 'Successfully create branch' }
   } catch (error) {
-    return false
+    return { success: false, message: error }
   }
 }
