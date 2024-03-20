@@ -56,10 +56,9 @@ jobs:
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
         with:
-          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          tagName: v__VERSION__
           releaseName: '${{ vars.APP_NAME }} v__VERSION__'
           releaseBody: 'Updates to improve the functionality and stability of the application.'
           releaseDraft: true
           prerelease: false
-          releaseCommitish: 'release' # static sha to test if pushing multiple targets
           args: ${{ matrix.settings.args }}
