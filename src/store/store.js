@@ -167,6 +167,7 @@ export const useStore = defineStore('main', {
       await $settings.save()
 
       if (key === 'projects' || key === 'pagination') {
+        this.ready = false
         await invoke('reset_caches')
         this.getProjects()
       }
