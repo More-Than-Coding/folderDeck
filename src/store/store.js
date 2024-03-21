@@ -32,6 +32,16 @@ export const useStore = defineStore('main', {
     lastUpdated: null,
     loading: false,
     pagination: 100,
+    pages: {
+      files: 0,
+      recent: 0,
+      name: 0,
+    },
+    pagesTotal: {
+      files: 0,
+      recent: 0,
+      name: 0,
+    },
     ready: false,
     reset: false,
     start: false,
@@ -133,9 +143,22 @@ export const useStore = defineStore('main', {
         pageSize: this.pagination,
       })
 
+      // Update project data
       this.sortProjectsName = data.projects_name.items
       this.sortProjectsRecent = data.projects_recent.items
       this.sortFilesRecent = data.files_recent.items
+
+      // Set page information
+      this.pages = {
+        files: data.files_recent.page_current,
+        recent: data.projects_recent.page_current,
+        name: data.projects_name.page_current,
+      }
+      this.pagesTotal = {
+        files: data.files_recent.pages_total,
+        recent: data.projects_recent.pages_total,
+        name: data.projects_name.pages_total,
+      }
 
       // Performance tracking start
       const timeEnd = performance.now()
@@ -154,6 +177,45 @@ export const useStore = defineStore('main', {
       // Log if in dev
       devLog({ title: '📂 Projects', message: `${entries.projects} total` })
       devLog({ title: '🕛 Time Elapsed', message: timeConvertMs(timeComplete) })
+    },
+    async paginate() {
+      if (this.filter == null) return
+
+      // Set type
+      const type = this.filter
+
+      // Determine next page
+      let nextPage = this.pages[type] + 1
+      if (nextPage > this.pagesTotal[type]) return
+
+      // Rust endpoints
+      const dataMap = {
+        files: {
+          invoke: 'files_recent',
+          stateName: 'sortFilesRecent',
+        },
+        recent: {
+          invoke: 'projects_name',
+          stateName: 'sortProjectsName',
+        },
+        name: {
+          invoke: 'projects_recent',
+          stateName: 'sortProjectsRecent',
+        },
+      }
+
+      const stateName = dataMap[type].stateName
+      const data = await invoke(dataMap[type].invoke, {
+        page: nextPage,
+        pageSize: this.pagination,
+      })
+
+      // Update array with new items
+      this[stateName] = [...this[stateName], ...data.items]
+
+      // Set page information
+      this.pages[type] = data.page_current
+      this.pagesTotal[type] = data.pages_total
     },
     async resetProjects() {
       // Exit if already reset

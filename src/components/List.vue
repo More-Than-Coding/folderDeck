@@ -1,11 +1,18 @@
 <script setup>
 // Imports
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useInfiniteScroll } from '@vueuse/core'
 import { UseElementVisibility } from '@vueuse/components'
+import { useStore } from '@src/store/store'
 
 // Components
 import Loading from '@src/components/Loading.vue'
 import Card from '@src/components/Card.vue'
+
+const store = useStore()
+
+// Computed
+const threshold = computed(() => Math.floor(store.pagination * 0.8) - 1)
 
 // Props
 const props = defineProps({
@@ -15,6 +22,12 @@ const props = defineProps({
 
 // Data
 const root = ref(null)
+const container = ref(null)
+
+// Use Methods
+const paginate = async () => await store.paginate()
+
+useInfiniteScroll(container, async () => await paginate(), { distance: 10 })
 </script>
 
 <template>
@@ -33,6 +46,7 @@ const root = ref(null)
     <template v-if="items && !loading">
       <div
         class="relative grid h-full snap-y snap-mandatory grid-cols-1 place-content-start gap-4 overflow-y-auto scroll-smooth pt-0.5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6"
+        ref="container"
       >
         <div
           class="snap-start snap-always scroll-mb-4 scroll-mt-0.5"
@@ -45,6 +59,7 @@ const root = ref(null)
               :class="{
                 'translate-y-0 scale-100': isVisible,
                 'translate-y-5 scale-90': !isVisible,
+                'bg-blue-500': threshold === index,
               }"
               :item="item"
             />
