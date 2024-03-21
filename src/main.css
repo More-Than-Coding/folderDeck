@@ -51,25 +51,25 @@
   .btn,
   .btn-solid {
     @apply btn-base text-stone-100;
-    @apply bg-zinc-800 hover:bg-zinc-700;
+    @apply bg-zinc-800 hover:bg-sky-900;
+    @apply border border-zinc-800 hover:border-sky-900;
     @apply dark:bg-indigo-600 dark:hover:bg-indigo-500;
-    @apply border border-zinc-800 hover:border-zinc-700;
     @apply dark:border-indigo-600 dark:hover:border-indigo-500;
   }
 
   .btn-outline {
     @apply btn-base bg-transparent;
-    @apply border border-zinc-800 hover:border-zinc-500;
+    @apply border border-zinc-800 hover:border-sky-900;
+    @apply text-zinc-800 hover:text-sky-900;
     @apply dark:border-indigo-500 dark:hover:border-indigo-400;
-    @apply text-zinc-800 hover:text-zinc-500;
     @apply dark:text-indigo-500 dark:hover:text-indigo-400;
   }
 
   .btn-outline-solid {
     @apply btn-base;
-    @apply border border-zinc-600 hover:bg-zinc-700;
-    @apply dark:border-indigo-500 dark:hover:bg-indigo-500;
+    @apply border border-zinc-600 hover:bg-sky-900;
     @apply text-zinc-600 hover:text-white;
+    @apply dark:border-indigo-500 dark:hover:bg-indigo-500;
     @apply dark:text-indigo-500 dark:hover:text-zinc-800;
   }
 

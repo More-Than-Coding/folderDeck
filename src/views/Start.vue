@@ -79,7 +79,7 @@ const selectDir = async (key) => {
         </h2>
         <p class="mb-6 text-center">{{ $t('start.info.projects') }}</p>
         <button class="btn" @click.prevent="selectDir('projects')">
-          {{ $t('settings.select_projects') }}
+          {{ $t('start.select_projects') }}
         </button>
       </div>
     </transition>
@@ -103,7 +103,7 @@ const selectDir = async (key) => {
         </h2>
         <p class="mb-6 text-center">{{ $t('start.info.template') }}</p>
         <button class="btn" @click.prevent="selectDir('template')">
-          {{ $t('settings.select_template') }}
+          {{ $t('start.select_template') }}
         </button>
       </div>
     </transition>

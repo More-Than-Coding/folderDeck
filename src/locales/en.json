@@ -75,7 +75,9 @@
     "labels": {
       "analytics": "Enable analytic tracking",
       "complete": "Finish Setup"
-    }
+    },
+    "select_projects": "Select Projects Folder",
+    "select_template": "Select Template Folder"
   },
   "settings": {
     "analytics": {
@@ -91,8 +93,9 @@
       "label": "Number of items to show",
       "info": "The number of projects or files to show per filter."
     },
-    "select_projects": "Select Projects Folder",
-    "select_template": "Select Template Folder"
+    "open_dir": "Open",
+    "select_projects": "Change Projects Folder",
+    "select_template": "Change Template Folder"
   },
   "update": {
     "checking": "Checking for new version ...",

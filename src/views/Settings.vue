@@ -1,10 +1,13 @@
 <script lang="js" setup>
-import { reactive } from 'vue'
-import { open } from '@tauri-apps/api/dialog'
+import { onMounted, reactive } from 'vue'
 import { useStore } from '@src/store/store'
-import { $settings } from '@src/utils/settings'
+import { open } from '@tauri-apps/api/dialog'
+
 import { defaultIgnores } from '@src/utils/entries'
-import { onMounted } from 'vue'
+import { $settings } from '@src/utils/settings'
+import { openFinder } from '@src/utils/finder'
+
+import IconFolderOpen from '@src/icons/icon_folder-open.vue'
 
 // Constants
 const store = useStore()
@@ -27,6 +30,9 @@ const init = async () => {
     const getSetting = await $settings.get(setting)
     if (getSetting != null) settings[setting] = getSetting.value
   }
+}
+const openDir = async (path) => {
+  await openFinder(path)
 }
 const save = async ({ key, value }) => {
   if (store[key] != null) store[key] = value
@@ -62,9 +68,22 @@ const selectDir = async (key) => {
     <div class="space-y-6">
       <!-- Project Folder -->
       <div class="space-y-3">
-        <button class="btn" @click.prevent="selectDir('projects')">
-          {{ $t('settings.select_projects') }}
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            class="btn btn-sm px-6"
+            @click.prevent="selectDir('projects')"
+          >
+            {{ $t('settings.select_projects') }}
+          </button>
+          <button
+            v-if="store.dir.projects != null"
+            @click.prevent="openDir(store.dir.projects)"
+            class="btn-outline-solid btn-sm flex items-center gap-1.5 px-6"
+          >
+            <IconFolderOpen class="h-4 w-4" />
+            <span>{{ $t('settings.open_dir') }}</span>
+          </button>
+        </div>
 
         <template v-if="store.dir.projects">
           <div
@@ -77,9 +96,23 @@ const selectDir = async (key) => {
 
       <!-- Template folder -->
       <div class="space-y-3">
-        <button class="btn" @click.prevent="selectDir('template')">
-          {{ $t('settings.select_template') }}
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            class="btn btn-sm px-6"
+            @click.prevent="selectDir('template')"
+          >
+            {{ $t('settings.select_template') }}
+          </button>
+          <button
+            v
+            v-if="store.dir.template != null"
+            @click.prevent="openDir(store.dir.template)"
+            class="btn-outline-solid btn-sm flex items-center gap-1.5 px-6"
+          >
+            <IconFolderOpen class="h-4 w-4" />
+            <span>{{ $t('settings.open_dir') }}</span>
+          </button>
+        </div>
 
         <template v-if="store.dir.template">
           <div
