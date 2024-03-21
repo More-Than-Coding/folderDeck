@@ -33,6 +33,7 @@ export const useStore = defineStore('main', {
     loading: false,
     pagination: 100,
     ready: false,
+    reset: false,
     start: false,
     search: '',
     searchResults: [],
@@ -154,6 +155,16 @@ export const useStore = defineStore('main', {
       devLog({ title: '📂 Projects', message: `${entries.projects} total` })
       devLog({ title: '🕛 Time Elapsed', message: timeConvertMs(timeComplete) })
     },
+    async resetProjects() {
+      // Exit if already reset
+      if (!this.reset) return
+
+      // Reset state
+      this.reset = false
+      this.ready = false
+      await invoke('reset_caches')
+      this.getProjects()
+    },
     async saveSetting({ dir = false, key, value }) {
       // Set loading
       this.loading = true
@@ -166,16 +177,8 @@ export const useStore = defineStore('main', {
       await $settings.set(key, { value })
       await $settings.save()
 
-      if (key === 'projects' || key === 'pagination') {
-        this.ready = false
-        await invoke('reset_caches')
-        /**
-         * TODO: Don't call until in projects route
-         * - Reset projects based variables
-         * - Have check on /projects routes to fetch if missing
-         */
-        this.getProjects()
-      }
+      // Reset last updated to be fetched in Projects view
+      if (key === 'projects' || key === 'pagination') this.reset = true
 
       // Reset loading
       this.loading = false
@@ -201,6 +204,15 @@ export const useStore = defineStore('main', {
       try {
         // Early exit if offline
         if (!window.navigator.onLine) return false
+
+        // Reset state
+        this.appUpdate = {
+          available: false,
+          checking: false,
+          complete: false,
+          installing: false,
+          manifest: {},
+        }
 
         // Check if update is available
         this.appUpdate.checking = true

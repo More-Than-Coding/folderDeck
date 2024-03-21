@@ -1,10 +1,13 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, nextTick, onMounted } from 'vue'
 import { useStore } from '@src/store/store'
 import List from '@src/components/List.vue'
 
 // Setup
 const store = useStore()
+
+// Lifecycle
+onMounted(async () => await store.resetProjects())
 
 // Computed
 const projects = computed(() => {

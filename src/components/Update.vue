@@ -34,6 +34,7 @@ const reset = () => {
     role="status"
     class="scheme-content absolute z-20 flex h-full w-full flex-col items-center justify-center gap-1 text-pretty px-16 text-center"
   >
+    <!-- Loading Spinner -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
       class="w12 mb-2 h-12 animate-spin fill-cyan-500 text-stone-500 dark:fill-indigo-500"
@@ -50,6 +51,8 @@ const reset = () => {
         fill="currentFill"
       />
     </svg>
+
+    <!-- Text -->
     <span class="font-medium">
       <!-- Checking for update -->
       <template v-if="store.appUpdate.checking">

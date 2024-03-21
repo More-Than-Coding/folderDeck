@@ -40,8 +40,7 @@ watchEffect(async () => {
     return
   }
 
-  // Disable start
-  await store.getProjects()
+  // Setup for fresh fetch and finish start
   store.start = false
 })
 

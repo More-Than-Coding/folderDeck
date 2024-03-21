@@ -43,8 +43,8 @@ const saveIgnores = async () => {
   await $settings.set(ignoreId, { value: settings.settings.ignore })
   await $settings.save()
 
-  // Refetch projects
-  await store.getProjects()
+  // Reset last updated to be fetched in Projects view
+  store.reset = true
 }
 const selectDir = async (key) => {
   const value = await open({ directory: true })
