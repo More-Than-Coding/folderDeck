@@ -169,6 +169,11 @@ export const useStore = defineStore('main', {
       if (key === 'projects' || key === 'pagination') {
         this.ready = false
         await invoke('reset_caches')
+        /**
+         * TODO: Don't call until in projects route
+         * - Reset projects based variables
+         * - Have check on /projects routes to fetch if missing
+         */
         this.getProjects()
       }
 
