@@ -4,6 +4,9 @@ import { useRoute } from 'vue-router'
 import { useStore } from '@src/store/store'
 import { track } from '@src/utils/track'
 
+import IconFolder from '@src/icons/icon_folder.vue'
+import IconFile from '@src/icons/icon_document-text.vue'
+
 const store = useStore()
 const route = useRoute()
 const filter = ref('recent')
@@ -41,7 +44,7 @@ const update = async (name) => {
     <ul class="grid grid-cols-3 items-center text-center">
       <li v-for="(name, index) in filters" :key="name">
         <button
-          class="filter"
+          class="flex items-center justify-center gap-1.5 filter"
           :class="{
             'filter-active': filter === name,
             'rounded-l-lg': index === 0,
@@ -51,7 +54,9 @@ const update = async (name) => {
           :aria-label="$t(`projects.filters.${name}.aria`)"
           @click.prevent="update(name)"
         >
-          {{ $t(`projects.filters.${name}.label`) }}
+          <IconFolder class="h-4 w-4" v-if="name != 'files'" />
+          <IconFile class="h-4 w-4" v-if="name == 'files'" />
+          <span>{{ $t(`projects.filters.${name}.label`) }}</span>
         </button>
       </li>
     </ul>
