@@ -53,9 +53,9 @@ onBeforeMount(async () => {
   restoreStateCurrent(StateFlags.SIZE)
   appName.value = await getName()
   await store.updateApp()
-  await store.init()
 })
 onMounted(async () => {
+  await store.init()
   await store.getProjects()
   await watchUpdates()
   setRoute()
