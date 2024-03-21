@@ -118,7 +118,7 @@ export const useStore = defineStore('main', {
       // Performance tracking start
       const timeStart = performance.now()
 
-      // // RUST get files and metadata
+      // Trigger RUST to get build cache
       const ignore = await ignoreList()
       const entries = await invoke('read_directory', {
         path: this.dir.projects,
@@ -126,23 +126,15 @@ export const useStore = defineStore('main', {
       })
       this.totalProjects = entries.projects
 
-      // Testing fetch cache
-      const projectsName = await invoke('projects_name', {
-        page: 0,
-        pageSize: this.pagination,
-      })
-      const projectsRecent = await invoke('projects_recent', {
-        page: 0,
-        pageSize: this.pagination,
-      })
-      const filesRecent = await invoke('files_recent', {
+      // Fetch individual filtered views
+      const data = await invoke('fetch_all_data', {
         page: 0,
         pageSize: this.pagination,
       })
 
-      this.sortProjectsName = projectsName.items
-      this.sortProjectsRecent = projectsRecent.items
-      this.sortFilesRecent = filesRecent.items
+      this.sortProjectsName = data.projects_name.items
+      this.sortProjectsRecent = data.projects_recent.items
+      this.sortFilesRecent = data.files_recent.items
 
       // Performance tracking start
       const timeEnd = performance.now()

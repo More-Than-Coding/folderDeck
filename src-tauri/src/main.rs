@@ -33,6 +33,7 @@ async fn main() {
             copy::copy_directory,
             open::open_directory,
             read::read_directory,
+            state::fetch_all_data,
             state::files_recent,
             state::projects_name,
             state::projects_recent,

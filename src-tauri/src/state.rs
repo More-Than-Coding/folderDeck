@@ -14,6 +14,13 @@ pub struct PaginatedResponse<T> {
     pub pages_total: usize,
 }
 
+#[derive(Serialize)]
+pub struct CombinedResponse {
+    files_recent: PaginatedResponse<FileInfo>,
+    projects_name: PaginatedResponse<FileInfo>,
+    projects_recent: PaginatedResponse<FileInfo>,
+}
+
 // Global Variables
 lazy_static! {
     pub static ref FILE_DATA: Mutex<Arc<HashMap<String, FileInfo>>> = Mutex::new(Arc::new(HashMap::new()));
@@ -166,6 +173,27 @@ pub async fn projects_recent(page: usize, page_size: usize) -> Result<PaginatedR
     Ok(async {
         paginate(&cache, page, page_size)
     }.await)
+}
+
+#[command]
+pub async fn fetch_all_data(page: usize, page_size: usize) -> Result<CombinedResponse, String> {
+    // You might need to adjust the locking logic depending on your actual cache structure
+    let files_recent_future = files_recent(page, page_size);
+    let projects_name_future = projects_name(page, page_size);
+    let projects_recent_future = projects_recent(page, page_size);
+
+    // Await all futures concurrently
+    let (files_recent_result, projects_name_result, projects_recent_result) = tokio::try_join!(
+        files_recent_future,
+        projects_name_future,
+        projects_recent_future
+    )?;
+
+    Ok(CombinedResponse {
+        files_recent: files_recent_result,
+        projects_name: projects_name_result,
+        projects_recent: projects_recent_result,
+    })
 }
 
 #[command]
