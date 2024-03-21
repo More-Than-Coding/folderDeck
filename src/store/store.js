@@ -143,6 +143,8 @@ export const useStore = defineStore('main', {
       // Finish
       this.lastUpdated = new Date()
       this.loading = false
+
+      // Initial ready setup
       if (!this.ready) this.ready = true
 
       // Analytics tracking of project load times

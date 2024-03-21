@@ -21,14 +21,14 @@ const root = ref(null)
   <div class="h-full p-5" ref="root">
     <!-- Loading -->
     <template v-if="loading">
-      <div class="flex h-1/2 flex-col items-center justify-center gap-2">
+      <div class="flex h-full flex-col items-center justify-center gap-2">
         <Loading />
         <div>{{ $t('projects.setup.loading') }}</div>
       </div>
     </template>
 
     <!-- Items -->
-    <template v-if="items">
+    <template v-if="items && !loading">
       <div
         class="relative grid h-full snap-y snap-mandatory grid-cols-1 place-content-start gap-4 overflow-y-auto scroll-smooth pt-0.5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6"
       >
@@ -51,6 +51,6 @@ const root = ref(null)
       </div>
     </template>
 
-    <slot name="empty" />
+    <slot v-if="!loading" name="empty" />
   </div>
 </template>
