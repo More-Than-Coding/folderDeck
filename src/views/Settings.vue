@@ -65,7 +65,7 @@ const selectDir = async (key) => {
 
 <template>
   <div class="p-5">
-    <div class="space-y-6">
+    <div class="max-w-[35rem] space-y-6">
       <!-- Project Folder -->
       <div class="space-y-3">
         <div class="flex items-center gap-2">
@@ -87,7 +87,7 @@ const selectDir = async (key) => {
 
         <template v-if="store.dir.projects">
           <div
-            class="scheme-main max-w-96 select-all rounded-md px-3 py-1.5 text-xs font-light uppercase tracking-[.06rem] dark:text-opacity-60"
+            class="scheme-main select-all rounded-md px-3 py-1.5 text-xs font-light uppercase tracking-[.06rem] dark:text-opacity-60"
           >
             {{ store.dir.projects }}
           </div>
@@ -116,7 +116,7 @@ const selectDir = async (key) => {
 
         <template v-if="store.dir.template">
           <div
-            class="scheme-main max-w-96 select-all rounded-md px-3 py-1.5 text-xs font-light uppercase tracking-[.06rem] dark:text-opacity-60"
+            class="scheme-main select-all rounded-md px-3 py-1.5 text-xs font-light uppercase tracking-[.06rem] dark:text-opacity-60"
           >
             {{ store.dir.template }}
           </div>
@@ -135,7 +135,7 @@ const selectDir = async (key) => {
             placeholder="100"
             @change="save({ key: 'pagination', value: settings.pagination })"
             v-model="settings.pagination"
-            class="input w-40 text-center"
+            class="input max-w-40 text-center"
             step="10"
             max="1000"
             min="10"
@@ -157,7 +157,7 @@ const selectDir = async (key) => {
             name="ignore"
             autocomplete="off"
             spellcheck="false"
-            class="input w-full max-w-96"
+            class="input w-full"
             :placeholder="$t('settings.ignore.placeholder')"
             @change="saveIgnores()"
             v-model="settings.ignore"
