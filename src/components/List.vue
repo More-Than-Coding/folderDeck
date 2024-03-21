@@ -22,7 +22,7 @@ const root = ref(null)
     <!-- Loading -->
     <template v-if="loading">
       <div
-        class="flex h-full select-none flex-col items-center justify-center gap-2"
+        class="flex h-full cursor-default select-none flex-col items-center justify-center gap-2"
       >
         <Loading />
         <div>{{ $t('projects.setup.loading') }}</div>
