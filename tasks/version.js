@@ -96,7 +96,6 @@ if (createRelease) {
 
   // Exit if could not create release branch
   if (!branchCreated.success) {
-    console.error('FAILED')
     cancel(branchCreated.message)
     process.exit(0)
   }
