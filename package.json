@@ -16,8 +16,9 @@
     "tauri": "tauri",
     "tauri-build": "vite build",
     "tauri-dev": "vite",
-    "update-version": "node tasks/version",
-    "update-cargo": "cd src-tauri && cargo update"
+    "update-cargo": "cd src-tauri && cargo update",
+    "update-icon": "yarn tauri icon ./public/icon.png",
+    "update-version": "node tasks/version"
   },
   "dependencies": {
     "@aptabase/tauri": "^0.4.1",
