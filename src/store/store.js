@@ -131,7 +131,7 @@ export const useStore = defineStore('main', {
 
       // Trigger RUST to get build cache
       const ignore = await ignoreList()
-      const entries = await invoke('read_directory', {
+      const entries = await invoke('update_projects', {
         path: this.dir.projects,
         ignore,
       })
@@ -224,7 +224,7 @@ export const useStore = defineStore('main', {
       // Reset state
       this.reset = false
       this.ready = false
-      await invoke('reset_caches')
+      await invoke('reset_projects')
       this.getProjects()
     },
     async saveSetting({ dir = false, key, value }) {

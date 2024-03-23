@@ -59,7 +59,6 @@ useInfiniteScroll(container, async () => await paginate(), { distance: 10 })
               :class="{
                 'translate-y-0 scale-100': isVisible,
                 'translate-y-5 scale-90': !isVisible,
-                'bg-blue-500': threshold === index,
               }"
               :item="item"
             />

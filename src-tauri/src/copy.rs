@@ -1,4 +1,3 @@
-// src/copy.rs
 use fs_extra::dir::{self, CopyOptions};
 use serde_json::json;
 use std::path::Path;

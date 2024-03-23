@@ -1,31 +1,15 @@
-use serde::{Serialize, Deserialize};
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use std::time::UNIX_EPOCH;
+use std::sync::Arc;
 use tauri::command;
-use crate::state::update_file_data;
 
-// Data Types
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct FileInfo {
-    pub name: String,
-    pub path: String,
-    pub metadata: FileMetadata,
-    pub children: Option<Vec<FileInfo>>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct FileMetadata {
-    pub created: Option<u64>,
-    pub modified: Option<u64>,
-    pub is_file: bool,
-    pub is_dir: bool,
-    pub file_size: Option<u64>,
-}
+use crate::data::{update_file_data, FILE_DATA, SORTED_DIR_CACHE, SORTED_DIR_CACHE_BY_MOD, SORTED_FILES_CACHE_BY_MOD};
+use crate::structs::{FileInfo, FileMetadata};
 
 // Methods
-fn read_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::io::Error> {
+fn update_projects_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::io::Error> {
     let metadata = fs::symlink_metadata(path)?;  // Use symlink_metadata to detect symlinks
     let is_file = metadata.is_file();
     let mut children = None;
@@ -49,7 +33,7 @@ fn read_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::io::Error> 
                 if entry_metadata.file_type().is_symlink() {
                     Err(std::io::Error::new(std::io::ErrorKind::Other, "Skipping symlink"))
                 } else {
-                    read_dir(&entry.path(), ignore)
+                    update_projects_dir(&entry.path(), ignore)
                 }
             })
             .filter_map(Result::ok)  // Optionally, you can handle errors differently here
@@ -74,11 +58,12 @@ fn read_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::io::Error> 
     })
 }
 
+
 // Tauri Commands
 #[command]
-pub fn read_directory(path: String, ignore: Vec<String>) -> Result<HashMap<String, usize>, String> {
+pub fn update_projects(path: String, ignore: Vec<String>) -> Result<HashMap<String, usize>, String> {
     let path = Path::new(&path);
-    match read_dir(path, &ignore) {
+    match update_projects_dir(path, &ignore) {
         Ok(data) => {
             update_file_data(path, data.clone());
 
@@ -90,4 +75,27 @@ pub fn read_directory(path: String, ignore: Vec<String>) -> Result<HashMap<Strin
         },
         Err(e) => Err(e.to_string()),
     }
+}
+
+#[command]
+pub async fn reset_projects() {
+    // First, deal with the synchronous std::sync::Mutex
+    // Ensure the lock is dropped immediately after use by scoping the block
+    {
+        let mut file_data_lock = FILE_DATA.lock().unwrap(); // Consider handling the potential panic more gracefully
+        *file_data_lock = Arc::new(HashMap::new());
+    } // The lock is dropped here
+
+    // Now, proceed with the async locks, which can safely be used with await
+    // Reset SORTED_DIR_CACHE
+    let mut sorted_dir_cache_lock = SORTED_DIR_CACHE.lock().await;
+    *sorted_dir_cache_lock = Arc::new(Vec::new());
+
+    // Reset SORTED_DIR_CACHE_BY_MOD
+    let mut sorted_dir_cache_by_mod_lock = SORTED_DIR_CACHE_BY_MOD.lock().await;
+    *sorted_dir_cache_by_mod_lock = Arc::new(Vec::new());
+
+    // Reset SORTED_FILES_CACHE_BY_MOD
+    let mut sorted_files_cache_by_mod_lock = SORTED_FILES_CACHE_BY_MOD.lock().await;
+    *sorted_files_cache_by_mod_lock = Arc::new(Vec::new());
 }
