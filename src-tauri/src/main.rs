@@ -27,8 +27,7 @@ fn get_aptabase_id() -> String {
 }
 
 // Main Launch
-#[tokio::main]
-async fn main() {
+fn main() {
     let aptabase_id = get_aptabase_id();
 
     tauri::Builder::default()

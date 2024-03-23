@@ -2,10 +2,10 @@ use lazy_static::lazy_static;
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
+use tauri::async_runtime;
 use tauri::command;
 use tokio::sync::Mutex as AsyncMutex;
 
-use crate::runtime::RUNTIME_HANDLE;
 use crate::structs::{CombinedResponse,FileInfo,PaginatedResponse};
 use crate::utils::{paginate,recursive_files,recursive_search};
 
@@ -73,7 +73,7 @@ pub fn update_file_data(path: &Path, data: FileInfo) {
     let path_str = path.to_string_lossy().to_string();
     Arc::get_mut(&mut *file_data).unwrap().insert(path_str, data);
 
-    RUNTIME_HANDLE.spawn(async {
+    async_runtime::spawn(async {
         update_dir_name().await;
         update_dir_recent().await;
         update_files_recent().await;
