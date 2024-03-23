@@ -9,6 +9,7 @@ pub mod copy;
 pub mod data;
 pub mod open;
 pub mod read;
+pub mod runtime;
 pub mod structs;
 
 // Methods

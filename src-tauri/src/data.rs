@@ -5,6 +5,7 @@ use std::sync::{Arc, Mutex};
 use tauri::command;
 use tokio::sync::Mutex as AsyncMutex;
 
+use crate::runtime::RUNTIME_HANDLE;
 use crate::structs::{CombinedResponse, FileInfo, PaginatedResponse};
 
 
@@ -22,8 +23,8 @@ pub fn update_file_data(path: &Path, data: FileInfo) {
     let path_str = path.to_string_lossy().to_string();
     Arc::get_mut(&mut *file_data).unwrap().insert(path_str, data);
 
-    // Trigger async update of caches
-    tokio::spawn(async {
+    // Use the global runtime handle to spawn tasks
+    RUNTIME_HANDLE.spawn(async {
         update_sorted_dir_cache().await;
         update_sorted_dir_cache_by_mod().await;
         update_sorted_files_cache_by_mod().await;
