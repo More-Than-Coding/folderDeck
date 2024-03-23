@@ -8,7 +8,7 @@ use crate::data::update_file_data;
 use crate::structs::{FileInfo, FileMetadata};
 
 // Methods
-fn read_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::io::Error> {
+fn update_projects_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::io::Error> {
     let metadata = fs::symlink_metadata(path)?;  // Use symlink_metadata to detect symlinks
     let is_file = metadata.is_file();
     let mut children = None;
@@ -32,7 +32,7 @@ fn read_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::io::Error> 
                 if entry_metadata.file_type().is_symlink() {
                     Err(std::io::Error::new(std::io::ErrorKind::Other, "Skipping symlink"))
                 } else {
-                    read_dir(&entry.path(), ignore)
+                    update_projects_dir(&entry.path(), ignore)
                 }
             })
             .filter_map(Result::ok)  // Optionally, you can handle errors differently here
@@ -59,9 +59,9 @@ fn read_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::io::Error> 
 
 // Tauri Commands
 #[command]
-pub fn read_directory(path: String, ignore: Vec<String>) -> Result<HashMap<String, usize>, String> {
+pub fn update_projects(path: String, ignore: Vec<String>) -> Result<HashMap<String, usize>, String> {
     let path = Path::new(&path);
-    match read_dir(path, &ignore) {
+    match update_projects_dir(path, &ignore) {
         Ok(data) => {
             update_file_data(path, data.clone());
 

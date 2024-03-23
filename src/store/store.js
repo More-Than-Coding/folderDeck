@@ -131,7 +131,7 @@ export const useStore = defineStore('main', {
 
       // Trigger RUST to get build cache
       const ignore = await ignoreList()
-      const entries = await invoke('read_directory', {
+      const entries = await invoke('update_projects', {
         path: this.dir.projects,
         ignore,
       })

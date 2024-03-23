@@ -8,7 +8,7 @@ use std::env;
 pub mod copy;
 pub mod data;
 pub mod open;
-pub mod read;
+pub mod update;
 pub mod runtime;
 pub mod structs;
 
@@ -34,13 +34,13 @@ async fn main() {
         .invoke_handler(tauri::generate_handler![
             copy::copy_directory,
             open::open_directory,
-            read::read_directory,
             data::fetch_all_data,
             data::files_recent,
             data::projects_name,
             data::projects_recent,
             data::reset_caches,
             data::search,
+            update::update_projects,
         ])
         .plugin(tauri_plugin_aptabase::Builder::new(&aptabase_id).build())
         .plugin(tauri_plugin_fs_extra::init())
