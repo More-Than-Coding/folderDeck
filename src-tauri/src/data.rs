@@ -1,25 +1,12 @@
 use lazy_static::lazy_static;
-use serde::Serialize;
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
 use tauri::command;
 use tokio::sync::Mutex as AsyncMutex;
-use crate::read::FileInfo;
 
-#[derive(Serialize)]
-pub struct PaginatedResponse<T> {
-    pub items: Vec<T>,
-    pub page_current: usize,
-    pub pages_total: usize,
-}
+use crate::structs::{CombinedResponse, FileInfo, PaginatedResponse};
 
-#[derive(Serialize)]
-pub struct CombinedResponse {
-    files_recent: PaginatedResponse<FileInfo>,
-    projects_name: PaginatedResponse<FileInfo>,
-    projects_recent: PaginatedResponse<FileInfo>,
-}
 
 // Global Variables
 lazy_static! {

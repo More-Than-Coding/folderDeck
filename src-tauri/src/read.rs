@@ -1,28 +1,11 @@
-use serde::{Serialize, Deserialize};
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use std::time::UNIX_EPOCH;
 use tauri::command;
-use crate::state::update_file_data;
 
-// Data Types
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct FileInfo {
-    pub name: String,
-    pub path: String,
-    pub metadata: FileMetadata,
-    pub children: Option<Vec<FileInfo>>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct FileMetadata {
-    pub created: Option<u64>,
-    pub modified: Option<u64>,
-    pub is_file: bool,
-    pub is_dir: bool,
-    pub file_size: Option<u64>,
-}
+use crate::data::update_file_data;
+use crate::structs::{FileInfo, FileMetadata};
 
 // Methods
 fn read_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::io::Error> {

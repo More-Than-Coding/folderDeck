@@ -5,10 +5,11 @@ use tauri_plugin_log::LogTarget;
 use log::LevelFilter;
 use std::env;
 
-pub mod state;
 pub mod copy;
+pub mod data;
 pub mod open;
 pub mod read;
+pub mod structs;
 
 // Methods
 fn get_aptabase_id() -> String {
@@ -33,12 +34,12 @@ async fn main() {
             copy::copy_directory,
             open::open_directory,
             read::read_directory,
-            state::fetch_all_data,
-            state::files_recent,
-            state::projects_name,
-            state::projects_recent,
-            state::reset_caches,
-            state::search,
+            data::fetch_all_data,
+            data::files_recent,
+            data::projects_name,
+            data::projects_recent,
+            data::reset_caches,
+            data::search,
         ])
         .plugin(tauri_plugin_aptabase::Builder::new(&aptabase_id).build())
         .plugin(tauri_plugin_fs_extra::init())
