@@ -224,7 +224,7 @@ export const useStore = defineStore('main', {
       // Reset state
       this.reset = false
       this.ready = false
-      await invoke('reset_caches')
+      await invoke('reset_projects')
       this.getProjects()
     },
     async saveSetting({ dir = false, key, value }) {

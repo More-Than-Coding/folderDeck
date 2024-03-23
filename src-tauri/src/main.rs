@@ -8,9 +8,10 @@ use std::env;
 pub mod copy;
 pub mod data;
 pub mod open;
-pub mod update;
 pub mod runtime;
 pub mod structs;
+pub mod update;
+pub mod utils;
 
 // Methods
 fn get_aptabase_id() -> String {
@@ -38,8 +39,8 @@ async fn main() {
             data::files_recent,
             data::projects_name,
             data::projects_recent,
-            data::reset_caches,
             data::search,
+            update::reset_projects,
             update::update_projects,
         ])
         .plugin(tauri_plugin_aptabase::Builder::new(&aptabase_id).build())

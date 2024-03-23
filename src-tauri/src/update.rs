@@ -2,9 +2,10 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use std::time::UNIX_EPOCH;
+use std::sync::Arc;
 use tauri::command;
 
-use crate::data::update_file_data;
+use crate::data::{update_file_data, FILE_DATA, SORTED_DIR_CACHE, SORTED_DIR_CACHE_BY_MOD, SORTED_FILES_CACHE_BY_MOD};
 use crate::structs::{FileInfo, FileMetadata};
 
 // Methods
@@ -57,6 +58,7 @@ fn update_projects_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::
     })
 }
 
+
 // Tauri Commands
 #[command]
 pub fn update_projects(path: String, ignore: Vec<String>) -> Result<HashMap<String, usize>, String> {
@@ -73,4 +75,27 @@ pub fn update_projects(path: String, ignore: Vec<String>) -> Result<HashMap<Stri
         },
         Err(e) => Err(e.to_string()),
     }
+}
+
+#[command]
+pub async fn reset_projects() {
+    // First, deal with the synchronous std::sync::Mutex
+    // Ensure the lock is dropped immediately after use by scoping the block
+    {
+        let mut file_data_lock = FILE_DATA.lock().unwrap(); // Consider handling the potential panic more gracefully
+        *file_data_lock = Arc::new(HashMap::new());
+    } // The lock is dropped here
+
+    // Now, proceed with the async locks, which can safely be used with await
+    // Reset SORTED_DIR_CACHE
+    let mut sorted_dir_cache_lock = SORTED_DIR_CACHE.lock().await;
+    *sorted_dir_cache_lock = Arc::new(Vec::new());
+
+    // Reset SORTED_DIR_CACHE_BY_MOD
+    let mut sorted_dir_cache_by_mod_lock = SORTED_DIR_CACHE_BY_MOD.lock().await;
+    *sorted_dir_cache_by_mod_lock = Arc::new(Vec::new());
+
+    // Reset SORTED_FILES_CACHE_BY_MOD
+    let mut sorted_files_cache_by_mod_lock = SORTED_FILES_CACHE_BY_MOD.lock().await;
+    *sorted_files_cache_by_mod_lock = Arc::new(Vec::new());
 }

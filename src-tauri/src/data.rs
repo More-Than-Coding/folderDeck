@@ -6,10 +6,11 @@ use tauri::command;
 use tokio::sync::Mutex as AsyncMutex;
 
 use crate::runtime::RUNTIME_HANDLE;
-use crate::structs::{CombinedResponse, FileInfo, PaginatedResponse};
+use crate::structs::{CombinedResponse,FileInfo,PaginatedResponse};
+use crate::utils::{paginate,recursive_files,recursive_search};
 
 
-// Global Variables
+// Cached Data
 lazy_static! {
     pub static ref FILE_DATA: Mutex<Arc<HashMap<String, FileInfo>>> = Mutex::new(Arc::new(HashMap::new()));
     pub static ref SORTED_DIR_CACHE: AsyncMutex<Arc<Vec<FileInfo>>> = AsyncMutex::new(Arc::new(Vec::new()));
@@ -17,72 +18,8 @@ lazy_static! {
     pub static ref SORTED_FILES_CACHE_BY_MOD: AsyncMutex<Arc<Vec<FileInfo>>> = AsyncMutex::new(Arc::new(Vec::new()));
 }
 
-// Methods
-pub fn update_file_data(path: &Path, data: FileInfo) {
-    let mut file_data = FILE_DATA.lock().unwrap();
-    let path_str = path.to_string_lossy().to_string();
-    Arc::get_mut(&mut *file_data).unwrap().insert(path_str, data);
-
-    // Use the global runtime handle to spawn tasks
-    RUNTIME_HANDLE.spawn(async {
-        update_sorted_dir_cache().await;
-        update_sorted_dir_cache_by_mod().await;
-        update_sorted_files_cache_by_mod().await;
-    });
-}
-
-// Supporting Methods
-fn collect_files_recursive(file_info: &FileInfo, files: &mut Vec<FileInfo>) {
-    if file_info.metadata.is_dir {
-        if let Some(children) = &file_info.children {
-            for child in children {
-                collect_files_recursive(child, files);
-            }
-        }
-    } else {
-        files.push(file_info.clone());
-    }
-}
-
-fn paginate<T: Clone>(items: &Arc<Vec<T>>, page: usize, page_size: usize) -> PaginatedResponse<T> {
-    let total_items = items.len();
-    let pages_total = (total_items + page_size - 1) / page_size;  // Calculate total number of pages
-    let page_current = page.min(pages_total);  // Ensure page_current is not out of bounds
-
-    let start = page * page_size;
-    let end = start + page_size.min(total_items - start);
-
-    PaginatedResponse {
-        items: if start < total_items { items[start..end].to_vec() } else { Vec::new() },
-        pages_total,
-        page_current,
-    }
-}
-
-fn search_files_recursive(file_info: &FileInfo, search_string: &str, results: &mut Vec<FileInfo>, limit: usize) {
-    if results.len() >= limit {
-        return; // Stop if the limit is reached
-    }
-
-    // Check the current file or directory name
-    if file_info.name.to_lowercase().contains(&search_string.to_lowercase()) {
-        results.push(file_info.clone()); // Clone to avoid lifetime issues
-    }
-
-    // Recursively search the first level of children only
-    if let Some(children) = &file_info.children {
-        for child in children {
-            search_files_recursive(child, search_string, results, limit);
-            if results.len() >= limit {
-                return; // Stop if the limit is reached
-            }
-        }
-    }
-}
-
-
-// Creating Caches
-async fn update_sorted_dir_cache() {
+// Update Cached Data
+async fn update_dir_name() {
     let all_children: Vec<FileInfo> = {
         let file_data_lock = FILE_DATA.lock().unwrap();
         file_data_lock.values()
@@ -98,7 +35,7 @@ async fn update_sorted_dir_cache() {
     *cache = Arc::new(sorted_children);
 }
 
-async fn update_sorted_dir_cache_by_mod() {
+async fn update_dir_recent() {
     let all_children: Vec<FileInfo> = {
         let file_data_lock = FILE_DATA.lock().unwrap();
         file_data_lock.values()
@@ -114,15 +51,15 @@ async fn update_sorted_dir_cache_by_mod() {
     *cache = Arc::new(sorted_children);
 }
 
-async fn update_sorted_files_cache_by_mod() {
+async fn update_files_recent() {
     let mut all_files: Vec<FileInfo> = Vec::new();
 
     {
         let file_data_lock = FILE_DATA.lock().unwrap();
         for file_info in file_data_lock.values() {
-            collect_files_recursive(file_info, &mut all_files);
+            recursive_files(file_info, &mut all_files);
         }
-    }  // Lock is dropped here
+    }
 
     // Sort files by their modified timestamp in descending order (most recent first)
     all_files.sort_by(|a, b| b.metadata.modified.cmp(&a.metadata.modified));
@@ -131,36 +68,35 @@ async fn update_sorted_files_cache_by_mod() {
     *cache = Arc::new(all_files);
 }
 
+pub fn update_file_data(path: &Path, data: FileInfo) {
+    let mut file_data = FILE_DATA.lock().unwrap();
+    let path_str = path.to_string_lossy().to_string();
+    Arc::get_mut(&mut *file_data).unwrap().insert(path_str, data);
+
+    RUNTIME_HANDLE.spawn(async {
+        update_dir_name().await;
+        update_dir_recent().await;
+        update_files_recent().await;
+    });
+}
 
 // Tauri Commands
 #[command]
 pub async fn files_recent(page: usize, page_size: usize) -> Result<PaginatedResponse<FileInfo>, String> {
     let cache = SORTED_FILES_CACHE_BY_MOD.lock().await;
-
-    // Execute pagination logic in an immediately awaited async block
-    Ok(async {
-        paginate(&cache, page, page_size)
-    }.await)
+    Ok(async { paginate(&cache, page, page_size) }.await)
 }
 
 #[command]
 pub async fn projects_name(page: usize, page_size: usize) -> Result<PaginatedResponse<FileInfo>, String> {
     let cache = SORTED_DIR_CACHE.lock().await;
-
-    // Execute pagination logic in an immediately awaited async block
-    Ok(async {
-        paginate(&cache, page, page_size)
-    }.await)
+    Ok(async { paginate(&cache, page, page_size) }.await)
 }
 
 #[command]
 pub async fn projects_recent(page: usize, page_size: usize) -> Result<PaginatedResponse<FileInfo>, String> {
     let cache = SORTED_DIR_CACHE_BY_MOD.lock().await;
-
-    // Execute pagination logic in an immediately awaited async block
-    Ok(async {
-        paginate(&cache, page, page_size)
-    }.await)
+    Ok(async { paginate(&cache, page, page_size) }.await)
 }
 
 #[command]
@@ -194,35 +130,13 @@ pub async fn search(query: String, limit: usize) -> Result<Vec<FileInfo>, String
 
         // Perform the search on the first level children of each top-level FileInfo
         for file_info in file_data_values.iter() {
-            search_files_recursive(file_info, &query, &mut matches, limit);
+            recursive_search(file_info, &query, &mut matches, limit);
             if matches.len() >= limit {
                 break; // Stop if the limit is reached
             }
         }
-    } // Lock is dropped here
+    }
 
     Ok(matches)
 }
 
-#[command]
-pub async fn reset_caches() {
-    // First, deal with the synchronous std::sync::Mutex
-    // Ensure the lock is dropped immediately after use by scoping the block
-    {
-        let mut file_data_lock = FILE_DATA.lock().unwrap(); // Consider handling the potential panic more gracefully
-        *file_data_lock = Arc::new(HashMap::new());
-    } // The lock is dropped here
-
-    // Now, proceed with the async locks, which can safely be used with await
-    // Reset SORTED_DIR_CACHE
-    let mut sorted_dir_cache_lock = SORTED_DIR_CACHE.lock().await;
-    *sorted_dir_cache_lock = Arc::new(Vec::new());
-
-    // Reset SORTED_DIR_CACHE_BY_MOD
-    let mut sorted_dir_cache_by_mod_lock = SORTED_DIR_CACHE_BY_MOD.lock().await;
-    *sorted_dir_cache_by_mod_lock = Arc::new(Vec::new());
-
-    // Reset SORTED_FILES_CACHE_BY_MOD
-    let mut sorted_files_cache_by_mod_lock = SORTED_FILES_CACHE_BY_MOD.lock().await;
-    *sorted_files_cache_by_mod_lock = Arc::new(Vec::new());
-}
