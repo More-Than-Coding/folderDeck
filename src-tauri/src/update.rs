@@ -61,11 +61,11 @@ fn update_projects_dir(path: &Path, ignore: &[String]) -> Result<FileInfo, std::
 
 // Tauri Commands
 #[command]
-pub fn update_projects(path: String, ignore: Vec<String>) -> Result<HashMap<String, usize>, String> {
+pub async fn update_projects(path: String, ignore: Vec<String>) -> Result<HashMap<String, usize>, String> {
     let path = Path::new(&path);
     match update_projects_dir(path, &ignore) {
         Ok(data) => {
-            update_file_data(path, data.clone());
+            update_file_data(path, data.clone()).await;
 
             // Initialize the children count to 0
             let children_count = data.children.as_ref().map_or(0, |children| children.len());

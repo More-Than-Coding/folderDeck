@@ -2,7 +2,6 @@ use lazy_static::lazy_static;
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
-use tauri::async_runtime;
 use tauri::command;
 use tokio::sync::Mutex as AsyncMutex;
 
@@ -70,18 +69,19 @@ async fn update_files_recent() {
     *cache = Arc::new(all_files_sorted);
 }
 
-
 pub async fn update_file_data(path: &Path, data: FileInfo) {
-    let mut file_data = FILE_DATA.lock().unwrap();
-    let path_str = path.to_string_lossy().to_string();
-    Arc::get_mut(&mut *file_data).unwrap().insert(path_str, data);
+    {
+        let mut file_data = FILE_DATA.lock().unwrap();
+        let path_str = path.to_string_lossy().to_string();
+        Arc::get_mut(&mut *file_data).unwrap().insert(path_str, data);
+    } // Release the lock before awaiting other async functions
 
-    async_runtime::spawn(async {
-        update_dir_name().await;
-        update_dir_recent().await;
-        update_files_recent().await;
-    });
+    // Directly await the asynchronous functions
+    update_dir_name().await;
+    update_dir_recent().await;
+    update_files_recent().await;
 }
+
 
 // Tauri Commands
 #[command]
@@ -104,6 +104,7 @@ pub async fn projects_recent(page: usize, page_size: usize) -> Result<PaginatedR
 
 #[command]
 pub async fn fetch_all_data(page: usize, page_size: usize) -> Result<CombinedResponse, String> {
+
     // You might need to adjust the locking logic depending on your actual cache structure
     let files_recent_future = files_recent(page, page_size);
     let projects_name_future = projects_name(page, page_size);
@@ -115,6 +116,7 @@ pub async fn fetch_all_data(page: usize, page_size: usize) -> Result<CombinedRes
         projects_name_future,
         projects_recent_future
     )?;
+
 
     Ok(CombinedResponse {
         files_recent: files_recent_result,
