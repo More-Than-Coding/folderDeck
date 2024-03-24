@@ -17,15 +17,15 @@ pub fn paginate<T: Clone>(items: &Arc<Vec<T>>, page: usize, page_size: usize) ->
 }
 
 pub fn recursive_files(file_info: &FileInfo, files: &mut Vec<FileInfo>) {
-  if file_info.metadata.is_dir {
-      if let Some(children) = &file_info.children {
-          for child in children {
-              recursive_files(child, files);
-          }
-      }
-  } else {
-      files.push(file_info.clone());
-  }
+    if file_info.metadata.is_dir {
+        if let Some(children) = &file_info.children {
+            for child in children {
+                recursive_files(child, files);
+            }
+        }
+    } else {
+        files.push(file_info.clone()); // Clone the FileInfo object
+    }
 }
 
 pub fn recursive_search(file_info: &FileInfo, search_string: &str, results: &mut Vec<FileInfo>, limit: usize) {
@@ -50,4 +50,13 @@ pub fn recursive_search(file_info: &FileInfo, search_string: &str, results: &mut
           }
       }
   }
+}
+
+use chrono::prelude::*;
+use std::time::SystemTime;
+
+pub fn timestamp_log(message: &str)  {
+    let now = SystemTime::now();
+    let date_time: DateTime<Utc> = now.into();
+    println!("{message} - {}", date_time.format("%Y-%m-%d %H:%M:%S%.3f"));
 }
