@@ -37,7 +37,7 @@ const projectName = computed(() => {
 <template>
   <div class="card group relative w-full space-y-5 text-left">
     <!-- Columns -->
-    <div class="grid grid-cols-12 gap-5">
+    <div class="grid grid-cols-12 gap-4">
       <!-- Column 1 -->
       <div class="col-span-3">
         <!-- Icon -->
@@ -72,10 +72,10 @@ const projectName = computed(() => {
         </div>
 
         <!-- Metadata -->
-        <div class="grid grid-cols-9 items-center gap-1 text-sm opacity-80">
+        <div class="grid grid-cols-11 items-center gap-1 text-sm opacity-80">
           <button
             v-if="item.metadata.is_file"
-            class="col-span-7 flex items-center gap-1.5 text-sm"
+            class="col-span-8 flex items-center gap-1.5 text-sm hover:underline"
             @click.prevent="openFinder(parentPath)"
           >
             <IconFolder class="h-[1.1rem] w-[1.1rem]" />
@@ -86,12 +86,15 @@ const projectName = computed(() => {
 
           <div
             v-if="item.metadata.file_size != null"
-            class="col-span-2 text-right"
+            class="col-span-3 text-right"
           >
             {{ fileSize(item.metadata.file_size, 1) }}
           </div>
 
-          <div class="col-span-full flex items-center gap-1.5 italic">
+          <div
+            class="col-span-full flex items-center gap-1.5 italic"
+            :title="new Date(item.metadata.modified).toLocaleString()"
+          >
             <IconClock class="h-[1.1rem] w-[1.1rem]" />
             <span>
               {{ useTimeAgo(new Date(item.metadata.modified)).value }}
