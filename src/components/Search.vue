@@ -2,7 +2,7 @@
 import { ref, watchEffect } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import { useStore } from '@src/store/store'
-import IconPlus from '@src/icons/icon_plus.vue'
+import IconPlus from '@src/icons/icon_folder-plus.vue'
 
 // Setup
 const store = useStore()
