@@ -52,23 +52,26 @@ async fn update_dir_recent() {
 }
 
 async fn update_files_recent() {
-    let mut all_files: Vec<FileInfo> = Vec::new();
-
-    {
+    let all_files_collected: Vec<FileInfo> = {
         let file_data_lock = FILE_DATA.lock().unwrap();
-        for file_info in file_data_lock.values() {
-            recursive_files(file_info, &mut all_files);
-        }
-    }
+        file_data_lock.values()
+            .flat_map(|file_info| {
+                let mut files = Vec::new();
+                recursive_files(file_info, &mut files);
+                files.into_iter()
+            })
+            .collect()
+    };
 
-    // Sort files by their modified timestamp in descending order (most recent first)
-    all_files.sort_by(|a, b| b.metadata.modified.cmp(&a.metadata.modified));
+    let mut all_files_sorted = all_files_collected;
+    all_files_sorted.sort_by(|a, b| b.metadata.modified.cmp(&a.metadata.modified));
 
     let mut cache = SORTED_FILES_CACHE_BY_MOD.lock().await;
-    *cache = Arc::new(all_files);
+    *cache = Arc::new(all_files_sorted);
 }
 
-pub fn update_file_data(path: &Path, data: FileInfo) {
+
+pub async fn update_file_data(path: &Path, data: FileInfo) {
     let mut file_data = FILE_DATA.lock().unwrap();
     let path_str = path.to_string_lossy().to_string();
     Arc::get_mut(&mut *file_data).unwrap().insert(path_str, data);
