@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import { useTimeAgo } from '@vueuse/core'
 import { useStore } from '@src/store/store'
 
@@ -22,11 +23,15 @@ const props = defineProps({
   item: Object,
 })
 
-// Methods
-const projectName = (item) => {
-  if (item.metadata.is_dir) return
-  return item.path.replace(store.dir.projects, '').split('/')[1]
-}
+// Computed
+const parentPath = computed(() => props.item.path.replace(props.item.name, ''))
+const parentName = computed(() =>
+  props.item.path.replace(`/${props.item.name}`, '').split('/').pop()
+)
+const projectName = computed(() => {
+  if (props.item.metadata.is_dir) return
+  return props.item.path.replace(store.dir.projects, '').split('/')[1]
+})
 </script>
 
 <template>
@@ -58,20 +63,26 @@ const projectName = (item) => {
       <div class="col-span-9 space-y-1.5">
         <!-- Title -->
         <div class="flex items-center gap-3">
-          <h3 class="w-full truncate font-bold text-black dark:text-white">
+          <h3
+            class="w-full truncate font-bold text-black dark:text-white"
+            :title="item.name"
+          >
             {{ item.name }}
           </h3>
         </div>
 
         <!-- Metadata -->
-        <div class="grid grid-cols-5 items-center gap-1 text-sm opacity-80">
-          <div
+        <div class="grid grid-cols-9 items-center gap-1 text-sm opacity-80">
+          <button
             v-if="item.metadata.is_file"
-            class="col-span-3 flex items-center gap-1.5 text-sm"
+            class="col-span-7 flex items-center gap-1.5 text-sm"
+            @click.prevent="openFinder(parentPath)"
           >
             <IconFolder class="h-[1.1rem] w-[1.1rem]" />
-            <span class="truncate">{{ projectName(item) }}</span>
-          </div>
+            <span class="truncate" :title="item.path">
+              {{ projectName }} / {{ parentName }}
+            </span>
+          </button>
 
           <div
             v-if="item.metadata.file_size != null"
