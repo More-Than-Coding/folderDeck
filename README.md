@@ -1,6 +1,6 @@
 # FolderDeck
 
-This is a free open source application to help individuals to manage their project directories.
+This is a free open-source application to help individuals to manage their project directories.
 
 ## Installation
 
