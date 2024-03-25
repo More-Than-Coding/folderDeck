@@ -2,19 +2,24 @@ use std::sync::Arc;
 use crate::structs::{FileInfo,PaginatedResponse};
 
 pub fn paginate<T: Clone>(items: &Arc<Vec<T>>, page: usize, page_size: usize) -> PaginatedResponse<T> {
-  let total_items = items.len();
-  let pages_total = (total_items + page_size - 1) / page_size;  // Calculate total number of pages
-  let page_current = page.min(pages_total);  // Ensure page_current is not out of bounds
+    let total_items = items.len();
+    let pages_total = (total_items + page_size - 1) / page_size;
+    let page_current = page.min(pages_total);
 
-  let start = page * page_size;
-  let end = start + page_size.min(total_items - start);
+    let start = page * page_size;
+    let end = if start > total_items {
+        total_items
+    } else {
+        (start + page_size).min(total_items)
+    };
 
-  PaginatedResponse {
-      items: if start < total_items { items[start..end].to_vec() } else { Vec::new() },
-      pages_total,
-      page_current,
-  }
+    PaginatedResponse {
+        items: if start < total_items { items[start..end].to_vec() } else { Vec::new() },
+        pages_total,
+        page_current,
+    }
 }
+
 
 pub fn recursive_files(file_info: &FileInfo, files: &mut Vec<FileInfo>) {
     if file_info.metadata.is_dir {
