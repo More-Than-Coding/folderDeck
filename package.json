@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@clack/prompts": "^0.7.0",
-    "@tauri-apps/cli": "^1.5.10",
+    "@tauri-apps/cli": "^1.5.11",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",
     "concurrently": "^8.2.2",

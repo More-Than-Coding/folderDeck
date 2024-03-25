@@ -949,7 +949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tauri-apps/cli@npm:^1.5.10":
+"@tauri-apps/cli@npm:^1.5.11":
   version: 1.5.11
   resolution: "@tauri-apps/cli@npm:1.5.11"
   dependencies:
@@ -1907,7 +1907,7 @@ __metadata:
     "@aptabase/tauri": "npm:^0.4.1"
     "@clack/prompts": "npm:^0.7.0"
     "@tauri-apps/api": "npm:^1.5.3"
-    "@tauri-apps/cli": "npm:^1.5.10"
+    "@tauri-apps/cli": "npm:^1.5.11"
     "@tauri-apps/plugin-log": "npm:^2.0.0-beta.1"
     "@vitejs/plugin-vue": "npm:^5.0.4"
     "@vueuse/components": "npm:^10.9.0"
