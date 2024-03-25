@@ -94,6 +94,7 @@
       "info": "The number of projects or files to show per filter."
     },
     "open_dir": "Open",
+    "open_dir_aria": "Open folder",
     "select_projects": "Change Projects Folder",
     "select_template": "Change Template Folder"
   },

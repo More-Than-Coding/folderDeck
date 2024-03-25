@@ -33,6 +33,7 @@ const addProject = () => (store.addProject = !store.addProject)
         type="search"
         spellcheck="false"
         :placeholder="$t('search.placeholder')"
+        @keydown.esc="store.search = ''"
         class="input w-full"
         v-model="search"
         name="q"
@@ -42,6 +43,7 @@ const addProject = () => (store.addProject = !store.addProject)
     <button
       class="btn-outline h-10 w-10 rounded-full p-0"
       @click.prevent="addProject()"
+      :title="$t('projects.add.button')"
     >
       <IconPlus class="h-5 w-5" />
       <span class="sr-only">

@@ -6,6 +6,7 @@ import { useStore } from '@src/store/store'
 // Utilities
 import { openFinder } from '@src/utils/finder'
 import { fileType, fileSize } from '@src/utils/files'
+import { formatNumber } from '@src/utils/numbers'
 
 // Icons
 import IconClock from '@src/icons/icon_clock.vue'
@@ -87,6 +88,7 @@ const projectName = computed(() => {
           <div
             v-if="item.metadata.file_size != null"
             class="col-span-3 text-right"
+            :title="`${formatNumber(item.metadata.file_size)} bytes`"
           >
             {{ fileSize(item.metadata.file_size, 1) }}
           </div>

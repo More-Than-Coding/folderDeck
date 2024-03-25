@@ -25,6 +25,7 @@ const menu = [
             'bg-white/90 opacity-75 dark:bg-zinc-800': item.to === $route.path,
           }"
           :to="item.to"
+          :title="$t(item.name)"
           @click="store.search = ''"
         >
           <span class="sr-only">{{ item.name }}</span>

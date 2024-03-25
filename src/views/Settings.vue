@@ -79,6 +79,7 @@ const selectDir = async (key) => {
             v-if="store.dir.projects != null"
             @click.prevent="openDir(store.dir.projects)"
             class="btn-outline-solid btn-sm flex items-center gap-1.5 px-6"
+            :title="$t('settings.open_dir_aria')"
           >
             <IconFolderOpen class="h-4 w-4" />
             <span>{{ $t('settings.open_dir') }}</span>

@@ -52,6 +52,7 @@ const update = async (name) => {
             'rounded-r-lg': index === filters.length - 1,
           }"
           :aria-label="$t(`projects.filters.${name}.aria`)"
+          :title="$t(`projects.filters.${name}.aria`)"
           @click.prevent="update(name)"
         >
           <IconFolder class="h-4 w-4" v-if="name != 'files'" />
