@@ -150,7 +150,7 @@
   .filter {
     @apply focus h-full w-full py-1 text-sm tracking-wide;
     @apply transition-all duration-200;
-    @apply border border-emerald-400 bg-emerald-400;
+    @apply border border-emerald-400 bg-emerald-400 text-green-800;
     @apply hover:text-white dark:text-white;
     @apply dark:border-indigo-500 dark:bg-indigo-500;
     @apply border-opacity-70 bg-opacity-15 hover:border-opacity-100 hover:bg-opacity-90;

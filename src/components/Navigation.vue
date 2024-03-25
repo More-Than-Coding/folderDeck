@@ -21,6 +21,9 @@ const menu = [
       <li v-for="(item, index) in menu" :key="index">
         <router-link
           class="flex items-center justify-center rounded-md py-2 opacity-60 hover:bg-white hover:opacity-100 disabled:cursor-not-allowed dark:hover:bg-zinc-800"
+          :class="{
+            'bg-white/90 opacity-75 dark:bg-zinc-800': item.to === $route.path,
+          }"
           :to="item.to"
           @click="store.search = ''"
         >
