@@ -181,6 +181,7 @@ const selectDir = async (key) => {
               name="analytics"
               v-model="settings.analytics"
               @change="save({ key: 'analytics', value: settings.analytics })"
+              class="checkbox"
             />
             <div class="font-medium">
               {{ $t('settings.analytics.label') }}
