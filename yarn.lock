@@ -1126,41 +1126,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-core@npm:^7.0.20":
-  version: 7.0.20
-  resolution: "@vue/devtools-core@npm:7.0.20"
+"@vue/devtools-core@npm:^7.0.21":
+  version: 7.0.21
+  resolution: "@vue/devtools-core@npm:7.0.21"
   dependencies:
-    "@vue/devtools-kit": "npm:^7.0.20"
-    "@vue/devtools-shared": "npm:^7.0.20"
+    "@vue/devtools-kit": "npm:^7.0.21"
+    "@vue/devtools-shared": "npm:^7.0.21"
     mitt: "npm:^3.0.1"
     nanoid: "npm:^3.3.4"
     pathe: "npm:^1.1.2"
     vite-hot-client: "npm:^0.2.3"
-  checksum: 10c0/42432e82c9cb9a3dd603d792513292b8ae25ea51dd9e7bd47f726ab1a987a8a44e607b2b36bf2288ae1a3880e8e75c38570491c897f15f563c7ed6888ce93cf0
+  checksum: 10c0/ce27d9c332ff24108370cb0a01c705b3f686d0a232fbd0378f68626e79d65e111b892ca7bbf4b8541bfe366110c5af1460b4063caa9b03019437d5fc4745a64c
   languageName: node
   linkType: hard
 
-"@vue/devtools-kit@npm:^7.0.20":
-  version: 7.0.20
-  resolution: "@vue/devtools-kit@npm:7.0.20"
+"@vue/devtools-kit@npm:^7.0.21":
+  version: 7.0.21
+  resolution: "@vue/devtools-kit@npm:7.0.21"
   dependencies:
-    "@vue/devtools-shared": "npm:^7.0.20"
+    "@vue/devtools-shared": "npm:^7.0.21"
     hookable: "npm:^5.5.3"
     mitt: "npm:^3.0.1"
     perfect-debounce: "npm:^1.0.0"
     speakingurl: "npm:^14.0.1"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/9495d4f2f7d10de1698615d7c6c77a534e94808d079e727eb5fdd227679692764c6b9c7568eb1359ae3341c114463411923ecb30660dc657c287b3e147820c08
+  checksum: 10c0/8106cb411141e4faa114e8cfe82017af815be33408cda2ec0f4ef57d057dec5c7bbd8b71a8ea895f61acf145034c2011e820c1cf7922777110aad9d34a4e2b23
   languageName: node
   linkType: hard
 
-"@vue/devtools-shared@npm:^7.0.20":
-  version: 7.0.20
-  resolution: "@vue/devtools-shared@npm:7.0.20"
+"@vue/devtools-shared@npm:^7.0.21":
+  version: 7.0.21
+  resolution: "@vue/devtools-shared@npm:7.0.21"
   dependencies:
     rfdc: "npm:^1.3.1"
-  checksum: 10c0/13018f22eb68f7c9edc5bf63224a78334d0e8ad2eb9703b1ba9908b6f628786287354b44c6205813c64de1bec8a62ce673d5010875789a2281bf2c8c6d5fe401
+  checksum: 10c0/908a8dd7492619584638a0352834853e4fc1d8459ccfa4aac6b082ccaad502a18c38f4cc0ba527ee94f83e0a7cf695425157037c4aad2d677ffdcfadc86bd745
   languageName: node
   linkType: hard
 
@@ -1925,7 +1925,7 @@ __metadata:
     tauri-plugin-store-api: "npm:^0.0.0"
     tauri-plugin-window-state-api: "https://github.com/tauri-apps/tauri-plugin-window-state#v1"
     vite: "npm:^5.2.6"
-    vite-plugin-vue-devtools: "npm:^7.0.20"
+    vite-plugin-vue-devtools: "npm:^7.0.21"
     vue: "npm:^3.4.21"
     vue-i18n: "npm:^9.10.2"
     vue-router: "npm:^4.3.0"
@@ -3697,20 +3697,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vue-devtools@npm:^7.0.20":
-  version: 7.0.20
-  resolution: "vite-plugin-vue-devtools@npm:7.0.20"
+"vite-plugin-vue-devtools@npm:^7.0.21":
+  version: 7.0.21
+  resolution: "vite-plugin-vue-devtools@npm:7.0.21"
   dependencies:
-    "@vue/devtools-core": "npm:^7.0.20"
-    "@vue/devtools-kit": "npm:^7.0.20"
-    "@vue/devtools-shared": "npm:^7.0.20"
+    "@vue/devtools-core": "npm:^7.0.21"
+    "@vue/devtools-kit": "npm:^7.0.21"
+    "@vue/devtools-shared": "npm:^7.0.21"
     execa: "npm:^8.0.1"
     sirv: "npm:^2.0.4"
     vite-plugin-inspect: "npm:^0.8.3"
     vite-plugin-vue-inspector: "npm:^4.0.2"
   peerDependencies:
     vite: ^3.1.0 || ^4.0.0-0 || ^5.0.0-0
-  checksum: 10c0/6b88c41773364654b4a14173c5ce61a54c5a5b4067a2d122d91ae4014640d07480491a18ebb4590c18f75b48a4e84cb6b737a0f412a4c9a895a1f7e27892cc24
+  checksum: 10c0/39a0732acc44632dbcc3fe4d01af47a0ece7325b9c0061bd3edb3a1317ed581f2b740baa568e02f20c584fba96811dfb69fb1fa474f63150330573bd87561473
   languageName: node
   linkType: hard
 
