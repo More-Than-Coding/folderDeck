@@ -6,7 +6,7 @@
   },
   "description": "Open-source file management app for project folders.",
   "private": true,
-  "version": "0.2.10",
+  "version": "0.2.11",
   "type": "module",
   "scripts": {
     "clean": "rimraf dist src-tauri/target",
