@@ -36,18 +36,18 @@
   },
   "devDependencies": {
     "@clack/prompts": "^0.7.0",
-    "@tauri-apps/cli": "^1.5.11",
-    "@vitejs/plugin-vue": "^5.0.4",
+    "@tauri-apps/cli": "^1.5.14",
+    "@vitejs/plugin-vue": "^5.0.5",
     "autoprefixer": "^10.4.19",
     "concurrently": "^8.2.2",
-    "npm-run-all2": "^6.1.2",
-    "postcss": "^8.4.38",
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.13",
-    "rimraf": "^5.0.5",
-    "tailwindcss": "^3.4.3",
-    "vite": "^5.2.8",
-    "vite-plugin-vue-devtools": "^7.0.25"
+    "npm-run-all2": "^6.2.0",
+    "postcss": "^8.4.39",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "rimraf": "^5.0.7",
+    "tailwindcss": "^3.4.4",
+    "vite": "^5.3.2",
+    "vite-plugin-vue-devtools": "^7.3.5"
   },
   "browserslist": {
     "production": [
